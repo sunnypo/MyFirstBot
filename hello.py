@@ -5,9 +5,12 @@ from telegram.ext import MessageHandler, Filters
 import os
 
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我与你相见了，你有什么想要和我说的吗？")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我们相见了……有什么想要和我说的吗？")
 def echo(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+    print(update)
+    print(update.message.from_user.first_name)
+    msg = "%s, \"%s\"吗? 无论如何，还是谢谢你和我说了这些。"%(update.message.from_user.first_name, update.message.text)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
 def read_file_as_str(file_path):
     # 判断路径文件存在
@@ -22,7 +25,7 @@ def read_file_as_str(file_path):
 TOKEN=read_file_as_str('TOKEN')
 print(TOKEN)
 
-updater = Updater(token='TOKEN', use_context=True)#建立连接
+updater = Updater(token=TOKEN, use_context=True)#建立连接
 dispatcher = updater.dispatcher#接收消息
 
 start_handler = CommandHandler('start', start)#start函数加到dispatch
