@@ -5,6 +5,7 @@ import os
 import random
 import trail
 import reward
+import guess
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我们相见了……有什么想要和我说的吗？（审判请发送“/trial”）")
@@ -38,5 +39,6 @@ dispatcher.add_handler(echo_handler)
 
 trail.add_dispatcher(dispatcher)
 reward.add_dispatcher(dispatcher)
+guess.add_dispatcher(dispatcher)
 
 updater.start_polling()#开始接受所有数据
