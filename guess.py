@@ -1,3 +1,4 @@
+import random
 from telegram.ext import CommandHandler
 
 def help():
@@ -8,12 +9,19 @@ def help():
     """
 
 def response_guess(update, context):
+    answerNumber = random.randrange(0, 100)
     print(context.args)
     if len(context.args) == 0 :
         update.message.reply_text(help())
     else:
         number = int(context.args[0])
         update.message.reply_text("you said %s"%number)
+        if number == answerNumber:
+            update.message.reply_text("%s is the right number"%number)
+        elif number < answerNumber:
+            update.message.reply_text("%s is too small"%number)
+        elif number > answerNumber:
+            update.message.reply_text("%s is too big"%number)
 
 
 def add_dispatcher(dispatcher):
