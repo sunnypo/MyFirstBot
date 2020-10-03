@@ -9,6 +9,7 @@ import guess
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我们相见了……有什么想要和我说的吗？（审判请发送“/trial”）")
+
 def echo(update, context):
     print(update)
     print(update.message.from_user.first_name)
@@ -26,7 +27,6 @@ def read_file_as_str(file_path):
     return all_the_text
 
 TOKEN=read_file_as_str('TOKEN')
-print(TOKEN)
 
 updater = Updater(token=TOKEN, use_context=True)#建立连接
 dispatcher = updater.dispatcher#接收消息

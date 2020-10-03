@@ -1,6 +1,9 @@
 import random
 from telegram.ext import CommandHandler
 
+answerNumber = random.randint(0, 100)
+member = {}
+
 def help():
     return """
     猜一个0-100之间的数字。You guessed a number from 0 - 100.
@@ -9,19 +12,29 @@ def help():
     """
 
 def response_guess(update, context):
-    answerNumber = random.randrange(0, 100)
+    global answerNumber
     print(context.args)
+    print(answerNumber)
     if len(context.args) == 0 :
         update.message.reply_text(help())
     else:
-        number = int(context.args[0])
-        update.message.reply_text("you said %s"%number)
-        if number == answerNumber:
-            update.message.reply_text("%s is the right number"%number)
-        elif number < answerNumber:
-            update.message.reply_text("%s is too small"%number)
-        elif number > answerNumber:
-            update.message.reply_text("%s is too big"%number)
+        if context.args[0].isdigit():
+            number = int(context.args[0])
+            userName = update.message.from_user.first_name
+            if userName in member:
+                member[userName] += 1
+            else:
+                member[userName] = 1
+            update.message.reply_text("you said %s, %s"%(number, answerNumber))
+            if number == answerNumber:
+                update.message.reply_text("%s is the right number"%number)
+                answerNumber = random.randint(0, 100)
+            elif number < answerNumber:
+                update.message.reply_text("%sfrom %s is too small"%(number,member))
+            elif number > answerNumber:
+                update.message.reply_text("%sfrom %s is too big"%(number,member))
+        else :
+            update.message.reply_text("your answer %s is not number"%context.args[0])
 
 
 def add_dispatcher(dispatcher):
