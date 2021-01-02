@@ -1,11 +1,14 @@
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler, Filters
+from telegram.ext import Updater,MessageHandler, Filters,CommandHandler
+from telegram import BotCommand
 import os
 import random
 import trail
 import reward
 import guess
+import coins
+import vote
+# import animation_info
+# import picture_info
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我们相见了……有什么想要和我说的吗？（审判请发送“/trial”）")
@@ -31,14 +34,20 @@ TOKEN=read_file_as_str('TOKEN')
 updater = Updater(token=TOKEN, use_context=True)#建立连接
 dispatcher = updater.dispatcher#接收消息
 
-start_handler = CommandHandler('start', start)#start函数加到dispatch
-dispatcher.add_handler(start_handler)
+trail.add_dispatcher(dispatcher)
+reward.add_dispatcher(dispatcher)
+guess.add_dispatcher(dispatcher)
+coins.add_handler(dispatcher)
+vote.add_handler(dispatcher)
 
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)#文字
 dispatcher.add_handler(echo_handler)
 
-trail.add_dispatcher(dispatcher)
-reward.add_dispatcher(dispatcher)
-guess.add_dispatcher(dispatcher)
+commands = reward.get_command() + guess.get_command() 
+bot = updater.bot
+bot.set_my_commands(commands)
+
+start_handler = CommandHandler('start', start)#start函数加到dispatch
+dispatcher.add_handler(start_handler)
 
 updater.start_polling()#开始接受所有数据
