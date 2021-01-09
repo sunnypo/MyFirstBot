@@ -7,8 +7,8 @@ import reward
 import guess
 import coins
 import vote
-import info_animation_picture
-import info_general
+import info_animation
+import info_picture
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="命运指引我们相见了……有什么想要和我说的吗？（审判请发送“/trial”）")
@@ -39,8 +39,8 @@ reward.add_dispatcher(dispatcher)
 guess.add_dispatcher(dispatcher)
 coins.add_handler(dispatcher)
 vote.add_handler(dispatcher)
-info_animation_picture.add_handler(dispatcher)
-info_general.add_handler(dispatcher)
+info_animation.add_handler(dispatcher)
+info_picture.add_handler(dispatcher)
 
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)#文字
 dispatcher.add_handler(echo_handler)
